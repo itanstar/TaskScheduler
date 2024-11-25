@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[]){
 	if(argc != 3){
-		printf("Usage : ./logWriter FileName Motion\n");
+		printf("Usage : ./logWriter <FileName> <Event>\n");
 		exit(0);
 	}
  	
@@ -15,7 +15,6 @@ int main(int argc, char* argv[]){
 	}
 
 	time_t current_time = time(NULL);
-    // struct tm 구조체로 변환
     struct tm *time_info = localtime(&current_time);
 
     char buffer[20];
