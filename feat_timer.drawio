@@ -1,0 +1,82 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.17 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.17">
+  <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
+    <mxGraphModel dx="378" dy="878" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIyWlLk6GJQsqaUBKTNV-3" target="3VRBMAXRQ6U3C26yNVNU-0" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIyWlLk6GJQsqaUBKTNV-3" target="3VRBMAXRQ6U3C26yNVNU-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-3" value="TimerConfig 구조체" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="160" y="80" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-0" value="특정 시간 타이머&lt;div&gt;set_target_time_timer()&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="60" y="230" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-2" value="지속 시간 타이머&lt;div&gt;set_duration_timer()&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="270" y="230" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="3VRBMAXRQ6U3C26yNVNU-6" target="3VRBMAXRQ6U3C26yNVNU-7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="3VRBMAXRQ6U3C26yNVNU-6" target="3VRBMAXRQ6U3C26yNVNU-8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-6" value="detect_timer_events()" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="160" y="375" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-7" value="&lt;div&gt;시간 확인&lt;/div&gt;&lt;div&gt;check_target_time()&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="60" y="525" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-8" value="결과 시간 확인&lt;div&gt;set_duration()&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="270" y="525" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="3VRBMAXRQ6U3C26yNVNU-11" target="3VRBMAXRQ6U3C26yNVNU-12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="3VRBMAXRQ6U3C26yNVNU-11" target="3VRBMAXRQ6U3C26yNVNU-13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-11" value="send_timer_signal()" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="170" y="710" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-12" value="&lt;div&gt;시그널 전송 성공&lt;/div&gt;" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="70" y="860" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-13" value="에러 처리" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="280" y="860" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-14" value="설정" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="100" y="140" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-15" value="설정" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="280" y="140" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-16" value="확인" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="100" y="430" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-17" value="확인" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;rotation=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="310" y="430" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-18" value="전송" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="110" y="770" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="3VRBMAXRQ6U3C26yNVNU-19" value="실패" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="310" y="760" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="qUhm7yD7KnTyZQy6HSCk-0" value="&lt;b&gt;&lt;font style=&quot;font-size: 17px;&quot;&gt;1. 타이머 설정&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="160" y="50" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="qUhm7yD7KnTyZQy6HSCk-1" value="&lt;b&gt;&lt;font style=&quot;font-size: 17px;&quot;&gt;2. 타이머 감지&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="160" y="340" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="qUhm7yD7KnTyZQy6HSCk-2" value="&lt;b&gt;&lt;font style=&quot;font-size: 17px;&quot;&gt;3. 시그널 처리&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="170" y="680" width="120" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
