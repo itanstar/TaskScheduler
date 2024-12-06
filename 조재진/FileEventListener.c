@@ -46,8 +46,9 @@ int string_to_event(char* str){
     if(strcmp("IN_ATTRIB", str) == 0) return IN_ATTRIB;
     if(strcmp("IN_MODIFY", str) == 0) return IN_MODIFY;
     if(strcmp("IN_MOVED_TO", str) == 0) return IN_MOVED_TO;
-    if(strcmp("IN_MOVED_FROM", str) == 0) return IN_MOVED_FROM; 
-    if(strcmp("IN_MOVE_SELF", str) == 0) return IN_MOVE_SELF;
+    if(strcmp("IN_MOVED_FROM", str) == 0) return IN_MOVED_FROM;
+    if(strcmp("IN_OPEN", str) == 0) return IN_OPEN;
+    if(strcmp("IN_CLOSE", str) == 0) return IN_CLOSE;
     return -1;
 }
 
@@ -82,8 +83,10 @@ void watch_inotify(void* args) {
         for (i = 0; i < len; ) {
 
             struct inotify_event *event = (struct inotify_event *) &buf[i];
+                
             if (event->mask & event_const) {
-                kill(getppid(), SIGUSR1);
+                if (strstr(event->name, ".goutputstream") == NULL) 
+                    kill(getppid(), SIGUSR1);
             }
             i += sizeof(struct inotify_event) + event->len;
         }
