@@ -12,6 +12,7 @@
 #define EXECUTOR "./Executor"
 #define CHG_ATTR "./CHG_ATTR"
 #define TIMER "./timer"
+#define PROC_KILLER "./proc_killer"
 
 #define MAX_TASKS 10
 
@@ -24,6 +25,7 @@ typedef struct Task
 	char target[20];
 	char event[20];
 
+	char next_variableType[20];
 	char next_process[20];
 	char next_target[20];
 	char parameter[20];
@@ -76,6 +78,12 @@ void sigusr1_handler(int signum, siginfo_t *info, void *context){
 				if(strcmp(tasks[i].next_process, "Change_Attr") == 0){
 					execl(CHG_ATTR, CHG_ATTR, 
 							tasks[i].next_target, tasks[i].parameter, NULL);
+					perror("execl failed");
+					exit(EXIT_FAILURE);
+				}
+				if(strcmp(tasks[i].next_process, "Terminate") == 0){
+					execl(PROC_KILLER, PROC_KILLER, 
+							tasks[i].next_variableType, tasks[i].next_target, NULL);
 					perror("execl failed");
 					exit(EXIT_FAILURE);
 				}
@@ -194,6 +202,109 @@ void select_task_type(WINDOW *task_win, char *selected_type)
     }
 }
 
+void get_file_event(WINDOW *task_win){
+	char filePath[20];
+	char event[20];
+
+	display_input_window("Enter filePath: ", filePath);
+    display_input_window("Enter event(IN_OOOOO): ", event);
+
+    strcpy(tasks[task_count].target, filePath);
+    strcpy(tasks[task_count].event, event);
+}
+
+void get_process_event(WINDOW *task_win){
+	char variableType[20];
+	char target[20];
+	char event[20];
+
+	display_input_window("Enter variableType(PID / NAME): ", variableType);
+	if(strcmp(variableType, "PID") == 0)
+		display_input_window("Enter PID: ", target);
+	else
+		display_input_window("Enter NAME: ", target);
+	
+    display_input_window("Enter event(terminate / create): ", event);
+
+	strcpy(tasks[task_count].variableType, variableType);
+    strcpy(tasks[task_count].target, target);
+    strcpy(tasks[task_count].event, event);
+}
+
+void get_timer_event(WINDOW *task_win){
+	char variableType[20];
+	char time[20];
+
+	display_input_window("Enter variableType(TIMER / ALARM): ", variableType);
+	if(strcmp(variableType, "TIMER") == 0)
+		display_input_window("Enter time(s): ", time);
+	else
+    	display_input_window("Enter time(HH:MM): ", time);
+
+	strcpy(tasks[task_count].variableType, variableType);
+    strcpy(tasks[task_count].target, time);
+}
+
+void get_next_process(WINDOW *task_win){
+	char next_variableType[20];
+	char next_process[20];
+	char next_target[20];
+	char parameter[20];
+	
+	display_input_window("Enter next process: ", next_process);
+	strcpy(tasks[task_count].next_process, next_process);
+
+	if((strcmp(next_process, "Execute") == 0) ||
+			(strcmp(next_process, "Change_Attr") == 0)){
+		//대상 파일과 파라미터 입력 받음
+		display_input_window("Enter next filePath: ", next_target);
+		display_input_window("Enter parameter(s): ", parameter);
+
+		strcpy(tasks[task_count].next_target, next_target);
+		strcpy(tasks[task_count].parameter, parameter);
+	}
+	else if(strcmp(next_process, "Terminate") == 0){
+		display_input_window("Enter variableType(PID / NAME): ", next_variableType);
+		if(strcmp(next_variableType, "PID") == 0)
+			display_input_window("Enter PID: ", next_target);
+		else
+			display_input_window("Enter NAME: ", next_target);
+
+		strcpy(tasks[task_count].next_variableType, next_variableType);
+		strcpy(tasks[task_count].next_target, next_target);
+	}
+}
+
+void run_event_listener(int task_num){
+	tasks[task_num].pid = fork();
+	if(tasks[task_num].pid == -1){
+		perror("fork");
+		exit(-1);
+	}
+
+	if(tasks[task_num].pid == 0){
+		//이벤트 리스너(감지 파일, 감지 이벤트) 실행
+		if(strcmp(tasks[task_num].type, "file") == 0){
+			execl(FILE_EVENT_LISTENER, FILE_EVENT_LISTENER, 
+				tasks[task_num].target, tasks[task_num].event, NULL);
+			perror("execl failed");
+			exit(EXIT_FAILURE);
+		}
+		else if(strcmp(tasks[task_num].type, "process") == 0){
+			execl(SCAN_PROC, SCAN_PROC, 
+			tasks[task_num].variableType, tasks[task_num].target, tasks[task_num].event, NULL);
+			perror("execl failed");
+			exit(EXIT_FAILURE);
+		}
+		else if(strcmp(tasks[task_num].type, "time") == 0){
+			execl(TIMER, TIMER, 
+				tasks[task_num].variableType, tasks[task_num].target, NULL);
+			perror("execl failed");
+			exit(EXIT_FAILURE);
+		}
+	}
+}
+
 // 태스크 생성
 void create_task(WINDOW *task_win)
 {
@@ -207,80 +318,31 @@ void create_task(WINDOW *task_win)
 
     char name[50];
     char type[20];
-	char variableType[20];
-	char filePath[20];
-	char event[20];
-	char next_process[20];
-	char next_filePath[20];
-	char parameter[20];
 
     display_input_window("Enter task name: ", name);
     select_task_type(task_win, type);
-	if(strcmp(type, "process") == 0){
-    	display_input_window("Enter variableType: ", variableType);
-    	strcpy(tasks[task_count].variableType, variableType);
-	}
 
-	if(strcmp(type, "time") == 0){	
-    	display_input_window("Enter variableType: ", variableType);
-    	strcpy(tasks[task_count].variableType, variableType);
-
-    	display_input_window("Enter time: ", filePath);
-	}
-
-    display_input_window("Enter filePath: ", filePath);
-    display_input_window("Enter event: ", event);
+	strcpy(tasks[task_count].name, name);
+	strcpy(tasks[task_count].type, type);
 
 	if(strcmp(type, "file") == 0){
-		display_input_window("Enter next process: ", next_process);
-		if((strcmp(next_process, "Execute") == 0) ||
-				(strcmp(next_process, "Change_Attr") == 0)){
-			//대상 파일과 파라미터 입력 받음
-			display_input_window("Enter next filePath: ", next_filePath);
-			display_input_window("Enter parameter(s): ", parameter);
-
-			strcpy(tasks[task_count].next_target, next_filePath);
-			strcpy(tasks[task_count].parameter, parameter);
-		}
+		get_file_event(task_win);
+	}
+	else if(strcmp(type, "process") == 0){
+		get_process_event(task_win);
+	}
+	else if(strcmp(type, "time") == 0){
+		get_timer_event(task_win);
 	}
 
 	
-    strcpy(tasks[task_count].name, name);
-    strcpy(tasks[task_count].type, type);
-    strcpy(tasks[task_count].target, filePath);
-    strcpy(tasks[task_count].event, event);
-    strcpy(tasks[task_count].next_process, next_process);
+	get_next_process(task_win);
+	
 
     tasks[task_count].active = 0;
     tasks[task_count].pid = 0;
 
-	tasks[task_count].pid = fork();
-	if(tasks[task_count].pid == -1){
-		perror("fork");
-		exit(-1);
-	}
-	
-	if(tasks[task_count].pid == 0){
-		//이벤트 리스너(감지 파일, 감지 이벤트) 실행
-		if(strcmp(type, "file") == 0){
-			execl(FILE_EVENT_LISTENER, FILE_EVENT_LISTENER, 
-				tasks[task_count].target, tasks[task_count].event, NULL);
-			perror("execl failed");
-			exit(EXIT_FAILURE);
-		}
-		else if(strcmp(type, "process") == 0){
-			execl(SCAN_PROC, SCAN_PROC, 
-			tasks[task_count].variableType, tasks[task_count].target, tasks[task_count].event, NULL);
-			perror("execl failed");
-			exit(EXIT_FAILURE);
-		}
-		else if(strcmp(type, "timer") == 0){
-			execl(TIMER, TIMER, 
-				tasks[task_count].variableType, tasks[task_count].target, NULL);
-			perror("execl failed");
-			exit(EXIT_FAILURE);
-		}
-	}
+	run_event_listener(task_count);
 
     task_count++;
 }
