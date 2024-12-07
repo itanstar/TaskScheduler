@@ -8,9 +8,9 @@
 // 프로세스 종료 함수 (RAM 제한)
 void kill_high_memory_process(int pid) {
     char command[256];
-    snprintf(command, sizeof(command), "kill -9 %d", pid);
+    sn//printf(command, sizeof(command), "kill -9 %d", pid);
     system(command);
-    printf("프로세스 PID=%d을(를) 종료하여 RAM 사용량을 제한했습니다.\n", pid);
+    //printf("프로세스 PID=%d을(를) 종료하여 RAM 사용량을 제한했습니다.\n", pid);
 }
 
 // 공유 메모리에서 RAM 사용량 모니터링 및 제어
@@ -24,11 +24,11 @@ void monitor_and_control_high_ram_usage(int shmid, double threshold) {
         }
 
         double usage = *shared_usage; // 공유 메모리에서 RAM 사용량 읽기
-        printf("현재 RAM 사용량: %.2f%%\n", usage);
+        //printf("현재 RAM 사용량: %.2f%%\n", usage);
 
         // 임계값 초과 시 처리
         if (usage > threshold) {
-            printf("⚠️ 경고: RAM 사용량이 %.2f%%를 초과했습니다!\n", threshold);
+            //printf("⚠️ 경고: RAM 사용량이 %.2f%%를 초과했습니다!\n", threshold);
 
             // 가장 RAM을 많이 사용하는 프로세스 확인
             FILE *fp = popen("ps -eo pid,%mem,comm --sort=-%mem | head -n 2 | tail -n 1", "r");
@@ -44,13 +44,13 @@ void monitor_and_control_high_ram_usage(int shmid, double threshold) {
             fscanf(fp, "%d %lf %s", &pid, &proc_mem, command);
             pclose(fp);
 
-            printf("최대 RAM 사용 프로세스: PID=%d, COMMAND=%s, MEM=%.2f%%\n", pid, command, proc_mem);
+            //printf("최대 RAM 사용 프로세스: PID=%d, COMMAND=%s, MEM=%.2f%%\n", pid, command, proc_mem);
 
             // RAM 사용량 제한 (프로세스 종료)
             kill_high_memory_process(pid);
 
             // 제한 후 30분 대기
-            printf("30분 동안 제한 상태를 유지합니다...\n");
+            //printf("30분 동안 제한 상태를 유지합니다...\n");
             sleep(1800); // 30분 = 1800초
         }
 
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    printf("RAM 사용량 모니터링 시작... 임계값: %.2f%%\n", threshold);
+    //printf("RAM 사용량 모니터링 시작... 임계값: %.2f%%\n", threshold);
 
     monitor_and_control_high_ram_usage(shmid, threshold);
 

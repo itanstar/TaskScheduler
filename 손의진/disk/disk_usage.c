@@ -30,7 +30,7 @@ void write_disk_usage_to_shared_memory(int shmid) {
     usage = (double)used / total * 100.0; // 사용 비율(%)
     *shared_usage = usage; // 공유 메모리에 저장
 
-    printf("디스크 사용량 계산: %.2f%%\n", usage);
+    //printf("디스크 사용량 계산: %.2f%%\n", usage);
 
     // 공유 메모리 해제
     shmdt(shared_usage);

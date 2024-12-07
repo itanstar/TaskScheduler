@@ -19,7 +19,7 @@ void monitor_disk_usage_from_shared_memory(int shmid, double threshold) {
 
         // 임계값 초과 시 경고
         if (usage > threshold) {
-            printf("⚠️ 경고: 디스크 사용량이 %.2f%%를 초과했습니다! 현재 사용량: %.2f%%\n", threshold, usage);
+            //printf("⚠️ 경고: 디스크 사용량이 %.2f%%를 초과했습니다! 현재 사용량: %.2f%%\n", threshold, usage);
         }
 
         // 공유 메모리 해제
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    printf("디스크 사용량 모니터링 시작... 임계값: %.2f%%\n", threshold);
+    //printf("디스크 사용량 모니터링 시작... 임계값: %.2f%%\n", threshold);
 
     monitor_disk_usage_from_shared_memory(shmid, threshold);
 

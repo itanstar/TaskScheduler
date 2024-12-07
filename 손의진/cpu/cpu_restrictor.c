@@ -10,14 +10,14 @@
 // CPU 사용량 제한 함수
 void limit_cpu_usage(int pid, double limit) {
     if (kill(pid, 0) == -1) {
-        printf("⚠️ 프로세스 PID=%d가 존재하지 않습니다. 제한 적용을 건너뜁니다.\n", pid);
+        //printf("⚠️ 프로세스 PID=%d가 존재하지 않습니다. 제한 적용을 건너뜁니다.\n", pid);
         return;
     }
 
     char command[256];
-    snprintf(command, sizeof(command), "cpulimit -p %d -l %.0f &", pid, limit);
+    sn//printf(command, sizeof(command), "cpulimit -p %d -l %.0f &", pid, limit);
     system(command);
-    printf("프로세스 PID=%d의 CPU 사용량을 %.0f%%로 제한했습니다.\n", pid, limit);
+    //printf("프로세스 PID=%d의 CPU 사용량을 %.0f%%로 제한했습니다.\n", pid, limit);
 
     notify_init("CPU Limit");
     NotifyNotification *notification = notify_notification_new(
@@ -41,11 +41,11 @@ void monitor_and_control_high_cpu_usage(int shmid, double threshold, double cpu_
         }
 
         double usage = *shared_usage;
-        printf("현재 CPU 사용량: %.2f%%\n", usage);
+        //printf("현재 CPU 사용량: %.2f%%\n", usage);
 
         // 임계값 초과 처리
         if (usage > threshold) {
-            printf("⚠️ 경고: CPU 사용량이 %.2f%%를 초과했습니다!\n", threshold);
+            //printf("⚠️ 경고: CPU 사용량이 %.2f%%를 초과했습니다!\n", threshold);
 
             notify_init("CPU Monitor");
             NotifyNotification *notification = notify_notification_new(
@@ -65,13 +65,7 @@ void monitor_and_control_high_cpu_usage(int shmid, double threshold, double cpu_
                 exit(1);
             }
 
-            char buffer[256];
-if (fgets(buffer, sizeof(buffer), fp) != NULL) {
-    printf("popen 출력: %s\n", buffer);
-} else {
-    printf("popen 출력 없음 또는 실패\n");
-}
-pclose(fp);
+            
 
             int pid;
             double proc_cpu;
@@ -79,17 +73,17 @@ pclose(fp);
             if (fgets(command, sizeof(command), fp) != NULL) {
                 if (sscanf(command, "%d %lf %[^\n]", &pid, &proc_cpu, command) == 3) {
                     if (kill(pid, 0) == -1) {
-                        printf("⚠️ PID=%d가 유효하지 않습니다.\n", pid);
+                        //printf("⚠️ PID=%d가 유효하지 않습니다.\n", pid);
                     } else {
-                        printf("최대 사용 프로세스: PID=%d, COMMAND=%s, CPU=%.2f%%\n", pid, command, proc_cpu);
+                        //printf("최대 사용 프로세스: PID=%d, COMMAND=%s, CPU=%.2f%%\n", pid, command, proc_cpu);
                         limit_cpu_usage(pid, cpu_limit);
 
                         // 30분 동안 제한 유지
-                        printf("30분 동안 제한을 유지합니다...\n");
+                        //printf("30분 동안 제한을 유지합니다...\n");
                         sleep(1800);
                     }
                 } else {
-                    printf("⚠️ 프로세스 정보를 읽는 데 실패했습니다.\n");
+                    //printf("⚠️ 프로세스 정보를 읽는 데 실패했습니다.\n");
                 }
             }
             pclose(fp);
@@ -122,7 +116,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    printf("CPU 사용량 모니터링 시작... 임계값: %.2f%%, 제한: %.2f%%\n", threshold, cpu_limit);
+    //printf("CPU 사용량 모니터링 시작... 임계값: %.2f%%, 제한: %.2f%%\n", threshold, cpu_limit);
 
     monitor_and_control_high_cpu_usage(shmid, threshold, cpu_limit);
 

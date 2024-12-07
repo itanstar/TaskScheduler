@@ -19,7 +19,7 @@ void monitor_ram_usage_from_shared_memory(int shmid, double threshold) {
 
         // 임계값 초과 시 알림
         if (usage > threshold) {
-            printf("⚠️ 경고: RAM 사용량이 %.2f%%를 초과했습니다! 현재 사용량: %.2f%%\n", threshold, usage);
+            //printf("⚠️ 경고: RAM 사용량이 %.2f%%를 초과했습니다! 현재 사용량: %.2f%%\n", threshold, usage);
             sleep(500);
         }
 
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    printf("RAM 사용량 모니터링 시작... 임계값: %.2f%%\n", threshold);
+    //printf("RAM 사용량 모니터링 시작... 임계값: %.2f%%\n", threshold);
 
     monitor_ram_usage_from_shared_memory(shmid, threshold);
 
