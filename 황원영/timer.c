@@ -117,12 +117,12 @@ TimerConfig* set_duration_timer(int duration, pid_t pid, int signum)
 int main() 
 {
     // 다른 프로세스(PID: 1234)에 5초 후 SIGUSR1 시그널 보내기
-    TimerConfig* duration_timer = set_duration_timer(5, 1234, SIGUSR1);
+    TimerConfig* duration_timer = set_duration_timer(5, getppid(), SIGUSR1);
     detect_timer_events(duration_timer);
     free(duration_timer);
     
     // 22시 30분에 SIGUSR2 시그널 보내기
-    TimerConfig* clock_time_timer = set_clock_time_timer(22, 30, 1234, SIGUSR2);
+    TimerConfig* clock_time_timer = set_clock_time_timer(22, 30, getppid(), SIGUSR2);
     detect_timer_events(clock_time_timer);
     free(clock_time_timer);
     
