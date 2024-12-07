@@ -114,17 +114,101 @@ TimerConfig* set_duration_timer(int duration, pid_t pid, int signum)
     return config;
 }
 
-int main() 
+/*int main() 
 {
     // 다른 프로세스(PID: 1234)에 5초 후 SIGUSR1 시그널 보내기
     TimerConfig* duration_timer = set_duration_timer(5, getppid(), SIGUSR1);
     detect_timer_events(duration_timer);
     free(duration_timer);
-    
-    // 22시 30분에 SIGUSR2 시그널 보내기
+    //첫번째에서 10으로 종류랑 실제 시간이랑 기간 
+
+    // 22시 30분에 SIGUSR2 시그널 보내기 ㅜ멀 실행하라라는 코드를 남길 때는 22:30으로 전달이 될 거라 
+    // strcat 써서 hour에 22넣고 min에 30 넣어서 원래 코드에 이식하는 그런 기능이 추가되어야 할 것
     TimerConfig* clock_time_timer = set_clock_time_timer(22, 30, getppid(), SIGUSR2);
     detect_timer_events(clock_time_timer);
     free(clock_time_timer);
     
+    return 0;
+}*/
+int main(int argc, char *argv[]) 
+{
+    if (argc < 2) 
+    {
+        printf("사용법:\n");
+        printf("N초 후 시그널: [프로그램명] 0 [초]\n");
+        printf("특정 시각 시그널: [프로그램명] 1 [시:분]\n");
+        return 1;
+    }
+
+    int type = atoi(argv[1]);  // 타이머 종류 (0: 지속시간, 1: 특정시각)
+
+    if (type == 0) 
+    {
+        if (argc != 3) 
+        {
+            printf("N초 후 시그널 사용법: [프로그램명] 0 [초]\n");
+            return 1;
+        }
+        int seconds = atoi(argv[2]);
+        TimerConfig* duration_timer = set_duration_timer(seconds, getppid(), SIGUSR1);
+        detect_timer_events(duration_timer);
+        free(duration_timer);
+    }
+    else if (type == 1) 
+    {
+        if (argc != 3) 
+        {
+            printf("특정 시각 시그널 사용법: [프로그램명] 1 [시:분]\n");
+            return 1;
+        }
+        
+        char hour_str[3] = "";
+        char min_str[3] = "";
+        char *time_str = argv[2];
+        int i;
+        
+        // 시간 부분 추출
+        for(i = 0; time_str[i] != ':' && time_str[i] != '\0' && i < 2; i++) 
+        {
+            char temp[2] = {time_str[i], '\0'};
+            strcat(hour_str, temp);
+        }
+        
+        if(time_str[i] != ':') 
+        {
+            printf("시간 형식이 잘못되었습니다. HH:MM 형식으로 입력하세요.\n");
+            return 1;
+        }
+        
+        // 분 부분 추출
+        i++;
+        int j = 0;
+        while(time_str[i] != '\0' && j < 2) 
+        {
+            char temp[2] = {time_str[i], '\0'};
+            strcat(min_str, temp);
+            i++;
+            j++;
+        }
+        
+        int hour = atoi(hour_str);
+        int minute = atoi(min_str);
+        
+        if(hour < 0 || hour > 23 || minute < 0 || minute > 59) 
+        {
+            printf("잘못된 시간입니다. 시(0-23), 분(0-59)을 확인하세요.\n");
+            return 1;
+        }
+
+        TimerConfig* clock_time_timer = set_clock_time_timer(hour, minute, getppid(), SIGUSR2);
+        detect_timer_events(clock_time_timer);
+        free(clock_time_timer);
+    }
+    else 
+    {
+        printf("잘못된 타이머 종류입니다. 0 또는 1을 입력하세요.\n");
+        return 1;
+    }
+
     return 0;
 }
