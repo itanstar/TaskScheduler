@@ -6,7 +6,8 @@
 #include <libnotify/notify.h>
 
 // 알림 표시 함수
-void show_notification(const char *summary, const char *body) {
+void show_notification(const char *summary, const char *body)
+{
     notify_init("CPU Monitor");
     NotifyNotification *notification = notify_notification_new(summary, body, NULL);
     notify_notification_show(notification, NULL);
@@ -15,11 +16,14 @@ void show_notification(const char *summary, const char *body) {
 }
 
 // 공유 메모리에서 CPU 사용량 모니터링
-void monitor_cpu_usage(int shmid, double threshold, int is_max) {
-    while (1) {
+void monitor_cpu_usage(int shmid, double threshold, int is_max)
+{
+    while (1)
+    {
         // 공유 메모리 연결
         double *shared_usage = (double *)shmat(shmid, NULL, 0);
-        if (shared_usage == (double *)-1) {
+        if (shared_usage == (double *)-1)
+        {
             perror("shmat 실패");
             exit(1);
         }
@@ -28,13 +32,13 @@ void monitor_cpu_usage(int shmid, double threshold, int is_max) {
         double usage = *shared_usage;
 
         // 조건에 따라 알림 표시
-        if ((is_max && usage > threshold) || (!is_max && usage < threshold)) {
+        if ((is_max && usage > threshold) || (!is_max && usage < threshold))
+        {
             char message[100];
             snprintf(message, sizeof(message), "현재 CPU 사용량: %.2f%%", usage);
             show_notification(
                 is_max ? "⚠️ CPU 사용량 초과 경고" : "⚠️ CPU 낮은 사용량 경고",
-                message
-            );
+                message);
             sleep(300); // 알림 후 300초 대기
         }
 
@@ -45,9 +49,11 @@ void monitor_cpu_usage(int shmid, double threshold, int is_max) {
     }
 }
 
-int main(int argc, char *argv[]) {
-    if (argc != 3) {
-        //printf("Usage: %s <MAX/MIN> <THRESHOLD>\n", argv[0]);
+int main(int argc, char *argv[])
+{
+    if (argc != 3)
+    {
+        // printf("Usage: %s <MAX/MIN> <THRESHOLD>\n", argv[0]);
         return 1;
     }
 
@@ -55,15 +61,17 @@ int main(int argc, char *argv[]) {
     double threshold = atof(argv[2]);
 
     int is_max = (strcmp(operation, "MAX") == 0);
-    if (!is_max && strcmp(operation, "MIN") != 0) {
-        //printf("Error: Invalid operation. Only 'MAX' or 'MIN' is supported.\n");
+    if (!is_max && strcmp(operation, "MIN") != 0)
+    {
+        // printf("Error: Invalid operation. Only 'MAX' or 'MIN' is supported.\n");
         return 1;
     }
 
     // 공유 메모리 연결
     key_t key = ftok("cpu_usage", 65);
     int shmid = shmget(key, sizeof(double), 0666);
-    if (shmid == -1) {
+    if (shmid == -1)
+    {
         perror("shmget 실패");
         exit(1);
     }
