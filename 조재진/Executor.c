@@ -19,8 +19,9 @@ int main(int argc, char* argv[]) {
 	}
 	exec_params[current] = NULL;
 
-	execv(argv[1], exec_params);
+	if(execv(argv[1], exec_params) == -1){
+		execvp(argv[1], exec_params);
+	}
 
-	perror("execv");
 	return 1;
 }

@@ -11,7 +11,6 @@ void change_permissions_in_directory(const char *dir_path, mode_t new_attr) {
     char full_path[BUF_LEN];
 
     if (dir == NULL) {
-        perror("Cannot Open DIR");
         return;
     }
 
@@ -23,7 +22,6 @@ void change_permissions_in_directory(const char *dir_path, mode_t new_attr) {
         snprintf(full_path, sizeof(full_path), "%s/%s", dir_path, entry->d_name);
 		
 		if (chmod(full_path, new_attr) != 0) {
-            //perror("chmod");
         }
     }
 
@@ -34,7 +32,6 @@ int main(int argc, char* argv[]){
 	mode_t new_attr = 0;
 	
 	if(argc != 3){
-		printf("Wront Input\n");
 		exit(-1);
 	}
 
@@ -51,8 +48,5 @@ int main(int argc, char* argv[]){
 	if(strcmp(argv[1], ".") == 0){
 		change_permissions_in_directory(".", new_attr);
 	}
-	else if (chmod(argv[1], new_attr) != 0) {
-        //perror("chmod");
-    }
 	return 0;
 }
