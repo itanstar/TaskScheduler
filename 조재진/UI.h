@@ -1,6 +1,7 @@
 #ifndef UI_H
 #define UI_H
 
+// UI 사용자 정의 헤더파일로 따로 분리
 #include <ncurses.h>
 #include <stdlib.h>
 #include <string.h>
