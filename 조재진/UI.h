@@ -11,6 +11,8 @@
 #include <signal.h>
 
 #define FILE_EVENT_LISTENER "./FileEventListener"
+#define SYSTEM_EVENT_LISTENER "./SystemEventListener"
+
 #define SCAN_PROC "./scan_proc"
 #define LOG_WRITER "./logWriter"
 #define EXECUTOR "./Executor"
@@ -48,6 +50,10 @@ void create_task(WINDOW *task_win);
 void delete_task(WINDOW *task_win, int index);
 void toggle_task(int index);
 void run_event_listener(int task_num);
+
+void select_system_resource(WINDOW *task_win, char *resource);
+void select_system_operation(WINDOW *task_win, char *operation);
+void get_system_event(WINDOW *task_win);
 
 void get_file_event(WINDOW *task_win);
 void get_process_event(WINDOW *task_win);

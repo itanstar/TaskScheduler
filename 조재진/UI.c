@@ -133,7 +133,7 @@ void list_tasks(WINDOW *task_win, int highlight)
 // 태스크 타입 선택 메뉴 (file, process, time, status)
 void select_task_type(WINDOW *task_win, char *selected_type)
 {
-    const char *types[] = {"file", "process", "time", "status"};
+    const char *types[] = {"file", "process", "time", "system"};
     int highlight = 0;
     int choice = -1;
     int c;
@@ -395,6 +395,91 @@ void select_next_process(WINDOW *task_win, char *next_process)
     }
 }
 
+void select_system_resource(WINDOW *task_win, char *resource)
+{
+    const char *resources[] = {"CPU", "RAM", "DISK"};
+    int highlight = 0;
+    int choice = -1;
+    int c;
+
+    while (choice == -1)
+    {
+        werase(task_win);
+        box(task_win, 0, 0);
+        mvwprintw(task_win, 1, 1, "Select Resource:");
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (i == highlight)
+                wattron(task_win, A_REVERSE);
+            mvwprintw(task_win, i + 2, 1, "%s", resources[i]);
+            if (i == highlight)
+                wattroff(task_win, A_REVERSE);
+        }
+
+        wrefresh(task_win);
+        c = wgetch(task_win);
+
+        switch (c)
+        {
+        case KEY_UP:
+            if (highlight > 0)
+                highlight--;
+            break;
+        case KEY_DOWN:
+            if (highlight < 2)
+                highlight++;
+            break;
+        case 10: // Enter key
+            strcpy(resource, resources[highlight]);
+            choice = highlight;
+            break;
+        }
+    }
+}
+
+void select_system_operation(WINDOW *task_win, char *operation)
+{
+    const char *operations[] = {"MAX", "MIN"};
+    int highlight = 0;
+    int choice = -1;
+    int c;
+
+    while (choice == -1)
+    {
+        werase(task_win);
+        box(task_win, 0, 0);
+        mvwprintw(task_win, 1, 1, "Select Operation:");
+
+        for (int i = 0; i < 2; i++)
+        {
+            if (i == highlight)
+                wattron(task_win, A_REVERSE);
+            mvwprintw(task_win, i + 2, 1, "%s", operations[i]);
+            if (i == highlight)
+                wattroff(task_win, A_REVERSE);
+        }
+
+        wrefresh(task_win);
+        c = wgetch(task_win);
+
+        switch (c)
+        {
+        case KEY_UP:
+            if (highlight > 0)
+                highlight--;
+            break;
+        case KEY_DOWN:
+            if (highlight < 1)
+                highlight++;
+            break;
+        case 10: // Enter key
+            strcpy(operation, operations[highlight]);
+            choice = highlight;
+            break;
+        }
+    }
+}
 // 파일 이벤트 태스크 설정
 void get_file_event(WINDOW *task_win)
 {
@@ -443,6 +528,37 @@ void get_timer_event(WINDOW *task_win)
     strcpy(tasks[task_count].target, timeStr);
 }
 
+// system 타입 태스크 설정
+void get_system_event(WINDOW *task_win)
+{
+    char resource[50];
+    char operation[50];
+    char value_str[50];
+
+    // 리소스 선택 (CPU, RAM, DISK)
+    select_system_resource(task_win, resource);
+
+    // 작업 선택 (MAX, MIN)
+    select_system_operation(task_win, operation);
+
+    // 값 입력 (0 ~ 100)
+    display_input_window("Enter Value (0~100): ", value_str);
+
+    // 값 검증
+    int value = atoi(value_str);
+    if (value < 0 || value > 100)
+    {
+        mvwprintw(task_win, 1, 1, "Invalid Value! Must be 0~100.");
+        wrefresh(task_win);
+        sleep(1);
+        return;
+    }
+
+    // 태스크 설정
+    strcpy(tasks[task_count].target, resource);
+    strcpy(tasks[task_count].event, operation);
+    strcpy(tasks[task_count].parameter, value_str);
+}
 // 다음 프로세스 설정 (LogWrite, Execute, Change_Attr, Terminate 선택 후 필요시 파라미터 입력)
 void get_next_process(WINDOW *task_win)
 {
@@ -506,6 +622,15 @@ void run_event_listener(int task_num)
             execl(TIMER, TIMER,
                   tasks[task_num].variableType, tasks[task_num].target, NULL);
         }
+        else if (strcmp(tasks[task_num].type, "system") == 0)
+        {
+            // SystemEventListener 실행: resource operation value
+            execl(SYSTEM_EVENT_LISTENER, SYSTEM_EVENT_LISTENER,
+                  tasks[task_num].target,    // resource
+                  tasks[task_num].event,     // operation (MAX/MIN)
+                  tasks[task_num].parameter, // value
+                  NULL);
+        }
         perror("execl failed");
         exit(EXIT_FAILURE);
     }
@@ -547,6 +672,10 @@ void create_task(WINDOW *task_win)
     else if (strcmp(type, "time") == 0)
     {
         get_timer_event(task_win);
+    }
+    else if (strcmp(type, "system") == 0)
+    {
+        get_system_event(task_win);
     }
     // status 타입에 대한 처리는 필요시 구현
 
