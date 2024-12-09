@@ -47,7 +47,9 @@ make
 
 빌드가 완료된 후 메인 애플리케이션을 실행합니다.
 
+```bash
 ./build/UI
+```
 
 📋 사용법
 
@@ -72,95 +74,6 @@ Task Manager 인터페이스
 🧹 클린 빌드
 
 빌드된 파일과 로그를 삭제하려면 다음 명령어를 실행합니다.
-
-make clean
-
-🛡️ Git 설정
-
-빌드 아티팩트가 Git에 포함되지 않도록 .gitignore 파일을 설정했습니다.
-
-# 객체 파일 무시
-*.o
-
-# 빌드 디렉토리 무시
-build/
-
-# 실행 파일 무시
-src/UI
-src/CHG_ATTR
-src/cpuAlarm
-src/diskAlarm
-src/Executor
-src/ExecutorTest
-src/FileEventListener
-src/logWriter
-src/proc_killer
-src/scan_proc
-src/SignalHandler
-src/SystemEventListener
-src/Test
-src/timer
-
-# 로그 파일 무시
-log.txt
-*.log
-
-# 임시 파일 무시
-*~
-
-.gitignore 적용 방법
-	1.	.gitignore 파일 생성 또는 수정:
-
-cd /path/to/your/project
-touch .gitignore
-
-
-	2.	위 내용을 .gitignore에 추가
-	3.	이미 추적 중인 파일 무시하기:
-
-git rm --cached src/UI src/CHG_ATTR src/cpuAlarm src/diskAlarm src/Executor src/ExecutorTest src/FileEventListener src/logWriter src/proc_killer src/scan_proc src/SignalHandler src/SystemEventListener src/Test src/timer log.txt
-
-
-	4.	변경 사항 커밋:
-
-git add .gitignore
-git commit -m "빌드 아티팩트 및 실행 파일 무시 설정"
-
-
-
-🔧 Makefile 개요
-
-Makefile은 프로젝트의 빌드 과정을 자동화합니다.
-
-주요 타겟
-	•	all: 모든 실행 파일 빌드
-	•	clean: 빌드 파일 및 로그 삭제
-
-빌드 규칙 예시
-
-# UI 빌드 (ncurses 필요)
-build/UI: UI.c UI.h | build
-	$(CC) $(CFLAGS) -o $@ UI.c -lncurses
-
-# cpuAlarm 빌드 (libnotify 필요)
-build/cpuAlarm: cpuAlarm.c | build
-	$(CC) -o $@ cpuAlarm.c `pkg-config --cflags --libs libnotify`
-
-# 기타 타겟들도 유사하게 설정
-
-사용 예
-	•	전체 빌드:
-
-make
-
-
-	•	특정 타겟 빌드:
-
-make UI
-
-
-	•	클린 빌드:
-
+```bash
 make clean
 ```
-
