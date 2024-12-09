@@ -75,14 +75,38 @@ void init_tasks()
     }
 }
 
-// 상단 제목 표시
+// 상단 제목 표시 (색상 및 속성 적용)
 void display_title()
 {
     int row, col;
     getmaxyx(stdscr, row, col);
-    const char *title = "Task Manager";
-    mvprintw(0, (col - (int)strlen(title)) / 2, "%s", title);
-    mvhline(1, 0, '-', col);
+
+    // 색상 지원 확인 및 초기화
+    if (has_colors() == FALSE)
+    {
+        endwin();
+        printf("Your terminal does not support color\n");
+        exit(1);
+    }
+
+    start_color();
+    // 색상 페어 정의
+    init_pair(1, COLOR_CYAN, COLOR_BLACK);   // 제목 텍스트
+    init_pair(2, COLOR_YELLOW, COLOR_BLACK); // 장식선
+
+    // 제목 텍스트 설정
+    const char *title = "===== Task Manager =====";
+
+    // 색상과 속성 적용
+    attron(COLOR_PAIR(1) | A_BOLD);
+    mvprintw(0, (col - strlen(title)) / 2, "%s", title);
+    attroff(COLOR_PAIR(1) | A_BOLD);
+
+    // 장식선 추가
+    attron(COLOR_PAIR(2));
+    mvhline(1, 0, '=', col);
+    attroff(COLOR_PAIR(2));
+
     refresh();
 }
 
