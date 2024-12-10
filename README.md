@@ -12,7 +12,7 @@ sudo apt install libnotify-dev
 
 ### system alarm 관련
 ```bash
-gcc -o example example.c `pkg-config --cflags --libs libnotify
+gcc -o example example.c `pkg-config --cflags --libs libnotify`
 ```
 ### SystemEventListener
 ```bash
