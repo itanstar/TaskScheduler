@@ -2,26 +2,14 @@
 #include <string.h>
 #include <unistd.h>
 
-#define MAX_ARGC 8
-#define MAX_ARGV_SIZE 256
+#define MAX_LEN 512
 
-int main(int argc, char* argv[]) {
-	char parameters[MAX_ARGC][MAX_ARGV_SIZE];
-	char* exec_params[MAX_ARGC];
-	int current = 0;
+int main(int argc, char *argv[])
+{
+	char echo[MAX_LEN];
 
-	char* token = strtok(argv[2], " ");
-	while (token != NULL && current < MAX_ARGC - 1) {
-		strcpy(parameters[current], token);
-		exec_params[current] = parameters[current];
-		current++;
-		token = strtok(NULL, " ");
-	}
-	exec_params[current] = NULL;
+	sprintf(echo, "%s %s; exec bash", argv[1], argv[2]);
+	execlp("gnome-terminal", "gnome-terminal", "--", "bash", "-c", echo, NULL);
 
-	if(execv(argv[1], exec_params) == -1){
-		execvp(argv[1], exec_params);
-	}
-
-	return 1;
+	return 0;
 }
