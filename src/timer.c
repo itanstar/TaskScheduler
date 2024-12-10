@@ -17,14 +17,7 @@ typedef struct {
 // 시그널 전송 함수
 void send_timer_signal(pid_t pid, int signum) 
 {
-    if (kill(pid, signum) == -1) 
-    {
-        perror("Failed to send signal");
-    } 
-    else 
-    {
-        printf("Signal %d sent to process %d\n", signum, pid);
-    }
+	kill(pid, signum);
 }
 
 // 특정 시각이 되었는지 확인하는 함수
@@ -45,14 +38,12 @@ bool check_duration(time_t start_time, int duration)
 void detect_timer_events(TimerConfig *config) 
 {
     time_t start_time = time(NULL);
-    printf("detecting...\n");
     while (1) 
     {
         if (config->use_target_time) 
         {
             if (check_target_time(config->target_time)) 
             {
-                printf("지정된 시각에 도달했습니다!\n");
                 send_timer_signal(config->target_pid, config->signal_number);
                 break;
             }
@@ -61,7 +52,6 @@ void detect_timer_events(TimerConfig *config)
         {
             if (check_duration(start_time, config->duration)) 
             {
-                printf("지정된 시간이 경과했습니다!\n");
                 send_timer_signal(config->target_pid, config->signal_number);
                 break;
             }
@@ -134,9 +124,6 @@ int main(int argc, char *argv[])
 {
     if (argc < 2) 
     {
-        printf("사용법:\n");
-        printf("N초 후 시그널: [프로그램명] 0 [초]\n");
-        printf("특정 시각 시그널: [프로그램명] 1 [시:분]\n");
         return 1;
     }
 
@@ -144,7 +131,6 @@ int main(int argc, char *argv[])
     {
         if (argc != 3) 
         {
-            printf("N초 후 시그널 사용법: [프로그램명] 0 [초]\n");
             return 1;
         }
         int seconds = atoi(argv[2]);
@@ -156,7 +142,6 @@ int main(int argc, char *argv[])
     {
         if (argc != 3) 
         {
-            printf("특정 시각 시그널 사용법: [프로그램명] 1 [시:분]\n");
             return 1;
         }
         
@@ -174,7 +159,6 @@ int main(int argc, char *argv[])
         
         if(time_str[i] != ':') 
         {
-            printf("시간 형식이 잘못되었습니다. HH:MM 형식으로 입력하세요.\n");
             return 1;
         }
         
@@ -194,17 +178,15 @@ int main(int argc, char *argv[])
         
         if(hour < 0 || hour > 23 || minute < 0 || minute > 59) 
         {
-            printf("잘못된 시간입니다. 시(0-23), 분(0-59)을 확인하세요.\n");
             return 1;
         }
 
-        TimerConfig* clock_time_timer = set_clock_time_timer(hour, minute, getppid(), SIGUSR2);
+        TimerConfig* clock_time_timer = set_clock_time_timer(hour, minute, getppid(), SIGUSR1);
         detect_timer_events(clock_time_timer);
         free(clock_time_timer);
     }
     else 
     {
-        printf("잘못된 타이머 종류입니다. 0 또는 1을 입력하세요.\n");
         return 1;
     }
 

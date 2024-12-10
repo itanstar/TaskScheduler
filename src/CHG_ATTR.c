@@ -11,6 +11,7 @@ void change_permissions_in_directory(const char *dir_path, mode_t new_attr) {
     char full_path[BUF_LEN];
 
     if (dir == NULL) {
+    	chmod(dir_path, new_attr);
         return;
     }
 
@@ -45,8 +46,6 @@ int main(int argc, char* argv[]){
 	if(argv[2][7] == 'w') new_attr |= S_IWOTH;
 	if(argv[2][8] == 'x') new_attr |= S_IXOTH;
 
-	if(strcmp(argv[1], ".") == 0){
-		change_permissions_in_directory(".", new_attr);
-	}
+	change_permissions_in_directory(argv[1], new_attr);
 	return 0;
 }

@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 	char echo[MAX_LEN];
 
 	sprintf(echo, "%s %s; exec bash", argv[1], argv[2]);
-	execlp("gnome-terminal", "gnome-terminal", "--", "bash", "-c", echo, NULL);
+	execlp("gnome-terminal", argv[1], "--", "bash", "-c", echo, NULL);
 
 	return 0;
 }

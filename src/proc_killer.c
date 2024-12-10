@@ -9,7 +9,6 @@
 void kill_by_name(const char *name) {
     DIR *proc_dir = opendir("/proc");
     if (!proc_dir) {
-        perror("Failed to open /proc");
         exit(EXIT_FAILURE);
     }
 
@@ -27,9 +26,7 @@ void kill_by_name(const char *name) {
                     if (strcmp(comm_name, name) == 0) {
                         pid_t pid = atoi(entry->d_name);
                         if (kill(pid, SIGKILL) == 0) {
-                            printf("Killed process: %s (PID: %d)\n", comm_name, pid);
                         } else {
-                            perror("Failed to kill process");
                         }
                     }
                 }
@@ -43,15 +40,12 @@ void kill_by_name(const char *name) {
 // PID로 종료
 void kill_by_pid(pid_t pid) {
     if (kill(pid, SIGKILL) == 0) {
-        printf("Killed process with PID: %d\n", pid);
     } else {
-        perror("Failed to kill process");
     }
 }
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
-        fprintf(stderr, "Usage: %s NAME <name> or %s PID <pid>\n", argv[0], argv[0]);
         return EXIT_FAILURE;
     }
 
@@ -62,10 +56,8 @@ int main(int argc, char *argv[]) {
         if (pid > 0) {
             kill_by_pid(pid);
         } else {
-            fprintf(stderr, "Invalid PID: %s\n", argv[2]);
         }
     } else {
-        fprintf(stderr, "Invalid option: %s. Use NAME or PID.\n", argv[1]);
         return EXIT_FAILURE;
     }
 

@@ -1,9 +1,11 @@
 #include<stdio.h>
 #include<unistd.h>
 
-int main(void){
-	while(1){
-		printf("Test\n");
-		sleep(1);
+int main(int argc, char* argv[]){
+	printf("%d ", argc);
+	for(int i = 1; i < argc; i++){
+		printf("%s ", argv[i]);
 	}
+	printf("\n");
+	return 0;
 }
