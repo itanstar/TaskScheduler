@@ -1,0 +1,29 @@
+.vscode/
+
+# 객체 파일 무시
+*.o
+
+# 실행 파일 무시 (확장자가 없는 파일)
+# src 디렉토리에 있는 특정 실행 파일 무시
+src/UI
+src/CHG_ATTR
+src/cpuAlarm
+src/diskAlarm
+src/ramAlarm
+src/Executor
+src/ExecutorTest
+src/FileEventListener
+src/logWriter
+src/proc_killer
+src/scan_proc
+src/SignalHandler
+src/SystemEventListener
+src/Test
+src/timer
+
+# 로그 파일 무시
+log.txt
+*.log
+
+# 임시 파일 무시
+*~
