@@ -15,7 +15,7 @@ DISK_ALARM = diskAlarm
 RAM_ALARM = ramAlarm
 
 # 나머지 타겟들
-TARGETS = CHG_ATTR Executor ExecutorTest FileEventListener logWriter \
+TARGETS = CHG_ATTR Executor FileEventListener logWriter \
           proc_killer scan_proc SignalHandler SystemEventListener Test timer
 
 # 모든 실행파일
@@ -45,9 +45,6 @@ CHG_ATTR: CHG_ATTR.c
 
 Executor: Executor.c
 	$(CC) $(CFLAGS) -o $@ Executor.c
-
-ExecutorTest: ExecutorTest.c
-	$(CC) $(CFLAGS) -o $@ ExecutorTest.c
 
 FileEventListener: FileEventListener.c
 	$(CC) $(CFLAGS) -o $@ FileEventListener.c
